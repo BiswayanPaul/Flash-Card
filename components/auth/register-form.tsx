@@ -44,7 +44,11 @@ export const RegisterForm = () => {
       register(values).then((data) => {
         setError(data.error);
         setSuccess(data.success);
-        router.push("/login");
+        if (data.success) {
+          setTimeout(() => {
+            router.push("/login");
+          }, 2000);
+        }
       });
     });
   };

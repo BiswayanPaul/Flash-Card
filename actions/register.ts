@@ -20,7 +20,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   if (existingUser) {
     return { error: "Email already exists" };
   }
-
+  
   await db.user.create({
     data: { email, password: hashedPassword, name },
   });

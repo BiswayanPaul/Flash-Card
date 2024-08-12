@@ -18,3 +18,10 @@ export const RegisterSchema = z.object({
 export const NewPasswordSchema = z.object({
   password: z.string().min(6, { message: "Min 6 characters required" }),
 });
+
+export const CardInputSchema = z.object({
+  title: z.string().min(1, {
+    message: "Title Required",
+  }),
+  definition: z.string(),
+});
