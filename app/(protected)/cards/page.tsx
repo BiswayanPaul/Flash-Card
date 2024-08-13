@@ -11,6 +11,7 @@ const CardPage = () => {
   const user = useCurrentUser();
   const [cards, setCards] = useState<any[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   const onClick = () => {
     router.push("/cards/createnew");
@@ -33,31 +34,60 @@ const CardPage = () => {
   }, [user]);
 
   const handlePrev = () => {
+    setIsFlipped(false); // Reset flip state
     setCurrentIndex((prevIndex) =>
       prevIndex > 0 ? prevIndex - 1 : cards.length - 1
     );
   };
 
   const handleNext = () => {
+    setIsFlipped(false); // Reset flip state
     setCurrentIndex((prevIndex) =>
       prevIndex < cards.length - 1 ? prevIndex + 1 : 0
     );
   };
 
+  const handleFlip = () => {
+    setIsFlipped(!isFlipped);
+  };
+
   return (
-    <div className="w-full h-full p-4">
+    <div className="w-full h-full p-4 flex flex-col items-center">
       <Button variant="outline" onClick={onClick} className="m-[2vh]">
         <FaPlus />
       </Button>
       {cards.length > 0 && (
-        <div className="flex flex-col items-center">
-          <div className="mb-4 p-4 border rounded shadow-sm w-full max-w-md">
-            <h2 className="text-lg font-semibold">
-              {cards[currentIndex].title}
-            </h2>
-            <p className="text-gray-600">{cards[currentIndex].definition}</p>
+        <div className="flex flex-col items-center space-y-4">
+          <div
+            className={`w-full h-full transition-transform duration-700 transform-style-preserve-3d ${
+              isFlipped ? "rotate-y-180" : ""
+            }`}
+          >
+            {isFlipped ? (
+              <div className="w-[35vh] h-[20vh] bg-white">
+                <Button
+                  onClick={handleFlip}
+                  className="w-full h-full text-center overflow-hidden text-ellipsis"
+                >
+                  <p className="overflow-y-auto rotate-y-180 h-full w-full break-words whitespace-normal flex text-center justify-center items-center">
+                    {cards[currentIndex].title}
+                  </p>
+                </Button>
+              </div>
+            ) : (
+              <div className="w-[35vh] h-[20vh] bg-white">
+                <Button
+                  onClick={handleFlip}
+                  className="w-full h-full text-center overflow-hidden text-ellipsis"
+                >
+                  <p className="overflow-y-auto h-full w-full break-words whitespace-normal flex text-center justify-center items-center">
+                    {cards[currentIndex].definition}
+                  </p>
+                </Button>
+              </div>
+            )}
           </div>
-          <div className="flex space-x-4">
+          <div className="flex gap-x-[5vh]">
             <Button onClick={handlePrev} variant="outline">
               <FaArrowLeft />
             </Button>
