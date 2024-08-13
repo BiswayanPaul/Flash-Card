@@ -24,4 +24,5 @@ export const CardInputSchema = z.object({
     message: "Title Required",
   }),
   definition: z.string(),
+  userId: z.string(),
 });
